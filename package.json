@@ -56,9 +56,11 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@architecturex/components.svg": "^1.0.1",
     "@architecturex/devtools": "1.1.6",
     "@architecturex/utils.config": "^1.0.5",
     "@architecturex/utils.cx": "^1.1.1",
+    "@architecturex/utils.dates": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ts-loader": "^9.4.4",

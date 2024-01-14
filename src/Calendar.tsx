@@ -1,4 +1,6 @@
 import cx from '@architecturex/utils.cx'
+import dates from '@architecturex/utils.dates'
+import SVG from '@architecturex/components.svg'
 import React, { FC, useEffect, useState } from 'react'
 
 const date = new Date()
@@ -21,8 +23,49 @@ type Props = {
 
 let translate = (text: string) => text
 
+const listStyle = 'grid grid-cols-7 m-auto p-0 w-full'
+
+const classes: any = {
+  mobile: {
+    header: 'flex items-center justify-between py-3 px-5 bg-codGray text-white w-[98%]',
+    currentDate: 'text-xl',
+    weekdays: 'hidden',
+    weekDaysLi: 'py-2 px-3 text-sm',
+    dayGrid: 'flex flex-col m-0 p-0 list-none',
+    dayGridLi: 'w-full flex items-center justify-between border-b border-l border-r border-gray-800 bg-white py-2 px-2 relative',
+    dayTodayPreviousAndNextMonth: 'flex-grow',
+    dayGridLiToday: 'bg-blue-700 text-white',
+    dayNumber: 'text-base flex-shrink-0 w-8',
+    event: 'bg-fire text-white p-5 rounded-md text-sm mr-3 max-w-[calc(100%-40px)] overflow-hidden overflow-ellipsis whitespace-nowrap',
+    notPaidDeposit: 'bg-cinnabar text-radical p-3 ml-2 text-center leading-5 text-base text-black',
+    past: 'bg-caribbean',
+    notPaid: 'bg-cinnabar'
+  },
+  desktop: {
+    header: 'flex items-center justify-between px-5 mb-8 text-center text-base min-h-[10vh] text-white',
+    ol: listStyle,
+    ul: listStyle,
+    li: 'flex items-center justify-center list-none ml-0',
+    weekdays: 'mb-4 border-0 font-extrabold no-underline',
+    dayGridLi: 'bg-white border-b border-gray-100 w-full custom-height relative',
+    dayNumber: 'absolute top-1 right-1 text-sm',
+    eventAndNextEvent: 'text-white w-full h-9 leading-9 text-left text-sm mt-[-100px] p-1.5 flex overflow-hidden ellipsis',
+    event: 'bg-fire',
+    start: 'ml-1',
+    past: 'bg-caribbean',
+    notPaid: 'bg-cinnabar',
+    notPaidDeposit: 'bg-cinnabar text-radical p-3 ml-2 text-center leading-5 text-base text-black',
+    nextEvent: 'bg-blue-900',
+    dayGridLiToday: 'bg-blue-700 text-white',
+    previousMonthDayNumber: 'text-gray-600',
+    previousAndLastMonthEvent: 'opacity-50'
+  }
+}
+
 const Calendar: FC<Props> = ({ events, dateClick, t, splitter = '-', view = 'desktop' }) => {
   date.setDate(1)
+
+  const styles = classes[view]
 
   if (t) {
     translate = t
@@ -96,7 +139,8 @@ const Calendar: FC<Props> = ({ events, dateClick, t, splitter = '-', view = 'des
           return (
             <div
               className={cx.join(
-                'event bg-fire text-white p-5 rounded-md text-sm mr-3 max-w-[calc(100%-40px)] overflow-hidden overflow-ellipsis whitespace-nowrap',
+                'event',
+                styles.event,
                 `event${i + 1}`,
                 isStartDate ? 'start ml-1' : '',
                 isPastDate ? 'past bg-salem' : '',
@@ -108,12 +152,12 @@ const Calendar: FC<Props> = ({ events, dateClick, t, splitter = '-', view = 'des
             >
               {isStartDate ? (
                 <>
-                  <b className="leading-10 bg-midnight inline-block h-16 -mt-1 mr-1 pl-2 pr-2 -ml-1">
+                  <b className="leading-[45px] bg-blue-900 inline-block h-15 mt-[-5px] mr-1.25 pl-2.5 pr-2.5 ml-[-5px]">
                     ❯
                   </b>{' '}
                   {event.title}{' '}
                   {!isDepositPaid && event.data.deposit && isPastDate ? (
-                    <div className="notPaidDeposit bg-radical p-2 ml-1 text-center leading-5 text-base text-black">
+                    <div className={cx.join('notPaidDeposit', styles.notPaidDeposit)}>
                       $
                     </div>
                   ) : (
